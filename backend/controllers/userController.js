@@ -12,7 +12,7 @@ const createUser = asyncHandler(async (req, res) => {
     }
     const userExists = await User.findOne({ email });
 
-    if (userExists) res.statur(400).send("User already exists");
+    if (userExists) res.status(400).send("User already exists");
 
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
@@ -21,9 +21,9 @@ const createUser = asyncHandler(async (req, res) => {
     try {
         await newUser.save();
         createToken(res, newUser._id);
-        res.satus(201).json({ _id: newUser._id, username: newUser.username, email: newUser.email, isAdmin: newUser.isAdmin, });
+        res.status(201).json({ _id: newUser._id, username: newUser.username, email: newUser.email, isAdmin: newUser.isAdmin, });
     } catch (error) {
-        res.satus(400)
+        res.status(400)
         throw new Error("Invalid user data")
     }
 
@@ -38,7 +38,7 @@ const loginUser = asyncHandler(async (req, res) => {
         const isPasswordValid = await bcrypt.compare(password, existingUser.password)
         if (isPasswordValid) {
             createToken(res, existingUser._id)
-            res.satus(201).json({ _id: existingUser._id, username: existingUser.username, email: existingUser.email, isAdmin: existingUser.isAdmin, });
+            res.status(201).json({ _id: existingUser._id, username: existingUser.username, email: existingUser.email, isAdmin: existingUser.isAdmin, });
             return;
         }
     }
@@ -85,9 +85,9 @@ const updateCurrentUserProfile = asyncHandler(async (req, res) => {
             user.password = hashedPassword
         }
 
-        const updateUser = await user.save();
+        const updatedUser = await user.save();
 
-        res.json({ _id: updateUser._id, username: updateUser.username, email: updateUser.email, isAdmin: updateUser.isAdmin });
+        res.json({ _id: updatedUser._id, username: updatedUser.username, email: updatedUser.email, isAdmin: updatedUser.isAdmin });
     } else {
         res.status(404)
         throw new Error("User not found.")
@@ -98,7 +98,7 @@ const deleteUserById = asyncHandler(async(req,res)=>{
     const user = await User.findById(req.params.id)
 
     if(user){
-        if(user.isADmin){
+        if(user.isAdmin){
             res.status(400)
             throw new Error("Cannot delete admin user")
         }
@@ -112,7 +112,7 @@ const deleteUserById = asyncHandler(async(req,res)=>{
 });
 
 const getUserById = asyncHandler(async(req, res)=>{
-    const user = await User.findById(req.params.id).select(-password);
+    const user = await User.findById(req.params.id).select("-password");
 
     if(user){
         res.json(user);
@@ -130,13 +130,13 @@ const updateUserById = asyncHandler(async(req,res)=>{
         user.email = req.body.email || user.email
         user.isAdmin = Boolean(req.body.isAdmin)
 
-        const UpdatedUser = await user.save()
+        const updatedUser = await user.save()
 
         res.json({
-            _id: UpdatedUser._id,
-            username: UpdatedUser.username,
-            email: UpdatedUser.email,
-            isAdmin: UpdatedUser.isAdmin,
+            _id: updatedUser._id,
+            username: updatedUser.username,
+            email: updatedUser.email,
+            isAdmin: updatedUser.isAdmin,
         })
     }else{
         res.status(404)
@@ -144,4 +144,4 @@ const updateUserById = asyncHandler(async(req,res)=>{
     }
 })
 
-export { createUser, loginUser, logoutCurrentUser, getAllUsers, getCurrentUserProfile, updateCurrentUserProfile,deleteUserById, getUserById, updateUserById };
+export { createUser, loginUser, logoutCurrentUser, getAllUsers, getCurrentUserProfile, updateCurrentUserProfile,deleteUserById, getUserById, updateUserById, };
