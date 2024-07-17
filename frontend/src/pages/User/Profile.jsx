@@ -8,7 +8,7 @@ import { setCredientials } from "../../redux/features/auth/authSlice";
 import { Link } from "react-router-dom";
 
 const Profile = () => {
-    const [username, setUserName] = useState("");
+    const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
@@ -19,7 +19,7 @@ const Profile = () => {
         useProfileMutation();
 
     useEffect(() => {
-        setUserName(userInfo.username);
+        setUsername(userInfo.username);
         setEmail(userInfo.email);
     }, [userInfo.email, userInfo.username]);
 
@@ -58,7 +58,7 @@ const Profile = () => {
                                 placeholder="Enter name"
                                 className="form-input p-4 rounded-sm w-full"
                                 value={username}
-                                onChange={(e) => setUserName(e.target.value)}
+                                onChange={(e) => setUsername(e.target.value)}
                             />
                         </div>
 

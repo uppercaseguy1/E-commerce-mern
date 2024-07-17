@@ -20,7 +20,7 @@ import Profile from "./pages/User/Profile.jsx";
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
-      <Route path="" element={<PrivateRoute />} >
+      <Route path='' element={<PrivateRoute />} >
         <Route path="/profile" element={<Profile />} />
       </Route>
       <Route path="/login" element={<Login />} />
