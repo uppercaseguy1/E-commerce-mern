@@ -3,7 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../../components/Loader";
 import { useLoginMutation } from "../../redux/api/usersApiSlice";
-import { setCredentials } from "../../redux/features/auth/authSlice";
+import { setCredientials } from "../../redux/features/auth/authSlice";
 import { toast } from "react-toastify";
 
 const Login = () => {
@@ -33,7 +33,7 @@ const Login = () => {
         try {
             const res = await login({ email, password }).unwrap();
             console.log(res);
-            dispatch(setCredentials({ ...res }));
+            dispatch(setCredientials({ ...res }));
         } catch (error) {
             toast.error(error?.data?.message || error.message)
         }

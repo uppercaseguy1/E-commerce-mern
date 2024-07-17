@@ -2,7 +2,7 @@ import { useState, useEffect } from "react"
 import { Link, useLocation, useNavigate } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 import Loader from "../../components/Loader"
-import { setCredentials } from "../../redux/features/auth/authSlice"
+import { setCredientials } from "../../redux/features/auth/authSlice"
 import { toast } from "react-toastify"
 import { useRegisterMutation } from "../../redux/api/usersApiSlice"
 
@@ -36,7 +36,7 @@ const Register = () => {
         } else {
             try {
                 const res = await register({ username, email, password }).unwrap();
-                dispatch(setCredentials({ ...res }));
+                dispatch(setCredientials({ ...res }));
                 navigate(redirect);
                 toast.success("User successfully registered");
             } catch (err) {
