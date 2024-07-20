@@ -94,7 +94,7 @@ const AdminProductUpdate = () => {
                     autoClose: 2000,
                 });
             } else {
-                toast.success(`Product successfully updated`, {
+                toast.success("Product successfully updated", {
                     position: toast.POSITION.TOP_RIGHT,
                     autoClose: 2000,
                 });
