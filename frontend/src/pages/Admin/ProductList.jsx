@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
     useCreateProductMutation,
@@ -23,6 +23,12 @@ const ProductList = () => {
     const [uploadProductImage] = useUploadProductImageMutation();
     const [createProduct] = useCreateProductMutation();
     const { data: categories } = useFetchCategoriesQuery();
+
+    useEffect (()=>{
+        if(categories && categories.length >0){
+            setCategory(categories[0].id);
+        }
+    },[categories]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
