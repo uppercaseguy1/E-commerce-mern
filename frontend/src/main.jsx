@@ -37,8 +37,8 @@ const router = createBrowserRouter(
       <Route path="/cart" element={<Cart />} />
       <Route path="/shop" element={<Shop />} />
 
-      <Route element={<PrivateRoute />}>
-        <Route path="admin/profile" element={<Profile />} />
+      <Route path="" element={<PrivateRoute />}>
+        <Route path="/profile" element={<Profile />} />
       </Route>
 
       <Route element={<AdminRoute />}>
