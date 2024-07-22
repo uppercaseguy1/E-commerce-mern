@@ -13,7 +13,7 @@ import "./Navigation.css";
 import { useSelector, useDispatch } from "react-redux";
 import { useLogoutMutation } from "../../redux/api/usersApiSlice";
 import { logout } from "../../redux/features/auth/authSlice";
-// import FavoritesCount from "../Products/FavoritesCount";
+import FavoritesCount from "../Products/FavoritesCount";
 
 const Navigation = () => {
     const { userInfo } = useSelector((state) => state.auth);
@@ -65,20 +65,31 @@ const Navigation = () => {
                     <span className="hidden nav-item-name mt-[3rem]">SHOP</span>{" "}
                 </Link>
 
-                <Link
-                    to="/cart"
-                    className="flex items-center transition-transform transform hover:translate-x-2"
-                >
-                    <AiOutlineShoppingCart className="mt-[3rem] mr-2" size={26} />
-                    <span className="hidden nav-item-name mt-[3rem]">CART</span>{" "}
+                <Link to="/cart" className="flex relative">
+                    <div className="flex items-center transition-transform transform hover:translate-x-2">
+                        <AiOutlineShoppingCart className="mt-[3rem] mr-2" size={26} />
+                        <span className="hidden nav-item-name mt-[3rem]">Cart</span>{" "}
+                    </div>
+
+                    {/* <div className="absolute top-9">
+                        {cartItems.length > 0 && (
+                            <span>
+                                <span className="px-1 py-0 text-sm text-white bg-pink-500 rounded-full">
+                                    {cartItems.reduce((a, c) => a + c.qty, 0)}
+                                </span>
+                            </span>
+                        )}
+                    </div> */}
                 </Link>
 
-                <Link
-                    to="/favorite"
-                    className="flex items-center transition-transform transform hover:translate-x-2"
-                >
-                    <FaHeart className="mt-[3rem] mr-2" size={20} />
-                    <span className="hidden nav-item-name mt-[3rem]">Favorites</span>
+                <Link to="/favorite" className="flex relative">
+                    <div className="flex justify-center items-center transition-transform transform hover:translate-x-2">
+                        <FaHeart className="mt-[3rem] mr-2" size={20} />
+                        <span className="hidden nav-item-name mt-[3rem]">
+                            Favorites
+                        </span>{" "}
+                        <FavoritesCount />
+                    </div>
                 </Link>
             </div>
 
@@ -112,9 +123,9 @@ const Navigation = () => {
                 </button>
 
                 {dropdownOpen && userInfo && (
-                    <ul className={`absolute right-0 mt-2 mr-14 space-y-2 bg-white text-gray-600 ${
-                        !userInfo.isAdmin ? '-top-20' : '-top-80'
-                        }`}
+                    <ul
+                        className={`absolute right-0 mt-2 mr-14 space-y-2 bg-white text-gray-600 ${!userInfo.isAdmin ? "-top-20" : "-top-80"
+                            } `}
                     >
                         {userInfo.isAdmin && (
                             <>
@@ -124,7 +135,7 @@ const Navigation = () => {
                                         className="block px-4 py-2 hover:bg-gray-100"
                                     >
                                         Dashboard
-                                    </Link> 
+                                    </Link>
                                 </li>
                                 <li>
                                     <Link
@@ -144,7 +155,7 @@ const Navigation = () => {
                                 </li>
                                 <li>
                                     <Link
-                                        to="/admin/ordrlist"
+                                        to="/admin/orderlist"
                                         className="block px-4 py-2 hover:bg-gray-100"
                                     >
                                         Orders
@@ -160,26 +171,22 @@ const Navigation = () => {
                                 </li>
                             </>
                         )}
+
                         <li>
-                            <Link
-                                to="/admin/profile"
-                                className="block px-4 py-2 hover:bg-gray-100"
-                            >
+                            <Link to="/profile" className="block px-4 py-2 hover:bg-gray-100">
                                 Profile
                             </Link>
                         </li>
                         <li>
-                            <Link
-                                to="/admin/logout"
+                            <button
                                 onClick={logoutHandler}
-                                className="block px-4 py-2 hover:bg-gray-100"
+                                className="block w-full px-4 py-2 text-left hover:bg-gray-100"
                             >
                                 Logout
-                            </Link>
+                            </button>
                         </li>
                     </ul>
                 )}
-
                 {!userInfo && (
                     <ul>
                         <li>
