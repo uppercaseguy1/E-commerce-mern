@@ -56,7 +56,7 @@ const Profile = () => {
                             <input
                                 type="text"
                                 placeholder="Enter name"
-                                className="form-input p-4 rounded-sm w-full"
+                                className="bg-[#0f0f10] text-white form-input p-4 rounded-sm w-full"
                                 value={username}
                                 onChange={(e) => setUsername(e.target.value)}
                             />
@@ -67,7 +67,7 @@ const Profile = () => {
                             <input
                                 type="email"
                                 placeholder="Enter email"
-                                className="form-input p-4 rounded-sm w-full"
+                                className="bg-[#0f0f10] text-white form-input p-4 rounded-sm w-full"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                             />
@@ -78,7 +78,7 @@ const Profile = () => {
                             <input
                                 type="password"
                                 placeholder="Enter password"
-                                className="form-input p-4 rounded-sm w-full"
+                                className="bg-[#0f0f10] text-white form-input p-4 rounded-sm w-full"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                             />
@@ -89,7 +89,7 @@ const Profile = () => {
                             <input
                                 type="password"
                                 placeholder="Confirm password"
-                                className="form-input p-4 rounded-sm w-full"
+                                className="bg-[#0f0f10] text-white form-input p-4 rounded-sm w-full"
                                 value={confirmPassword}
                                 onChange={(e) => setConfirmPassword(e.target.value)}
                             />
@@ -105,7 +105,7 @@ const Profile = () => {
 
                             <Link
                                 to="/user-orders"
-                                className="bg-pink-600 text-white py-2 px-4 rounded hover:bg-pink-700"
+                                className="bg-red-600 text-white py-2 px-4 rounded hover:bg-red-700"
                             >
                                 My Orders
                             </Link>
