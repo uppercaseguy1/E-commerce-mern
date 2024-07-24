@@ -61,19 +61,6 @@ const ProductList = () => {
     };
 
     const uploadFileHandler = async (e) => {
-        // const formData = new FormData();
-        // formData.append("image", e.target.files[0]);
-
-        // try {
-        //     const res = await uploadProductImage(formData).unwrap();
-        //     toast.success(res.message);
-        //     setImage(res.image);
-        //     setImageUrl(res.image);
-        // } catch (error) {
-        //     toast.error(error?.data?.message || error.error);
-        // }
-        // console.log(e);
-
         const storage = getStorage(app);
         const file = e.target.files[0];
         const uniqueFileName = `images/${Date.now()}_${file.name}`;
