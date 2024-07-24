@@ -1,4 +1,4 @@
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
     useCreateProductMutation,
@@ -7,6 +7,8 @@ import {
 import { useFetchCategoriesQuery } from "../../redux/api/categoryApiSlice";
 import { toast } from "react-toastify";
 import AdminMenu from "./AdminMenu";
+import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import app from "../../firebase";
 
 const ProductList = () => {
     const [image, setImage] = useState("");
@@ -24,11 +26,11 @@ const ProductList = () => {
     const [createProduct] = useCreateProductMutation();
     const { data: categories } = useFetchCategoriesQuery();
 
-    useEffect (()=>{
-        if(categories && categories.length >0){
+    useEffect(() => {
+        if (categories && categories.length > 0) {
             setCategory(categories[0].id);
         }
-    },[categories]);
+    }, [categories]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -59,17 +61,56 @@ const ProductList = () => {
     };
 
     const uploadFileHandler = async (e) => {
-        const formData = new FormData();
-        formData.append("image", e.target.files[0]);
+        // const formData = new FormData();
+        // formData.append("image", e.target.files[0]);
 
-        try {
-            const res = await uploadProductImage(formData).unwrap();
-            toast.success(res.message);
-            setImage(res.image);
-            setImageUrl(res.image);
-        } catch (error) {
-            toast.error(error?.data?.message || error.error);
-        }
+        // try {
+        //     const res = await uploadProductImage(formData).unwrap();
+        //     toast.success(res.message);
+        //     setImage(res.image);
+        //     setImageUrl(res.image);
+        // } catch (error) {
+        //     toast.error(error?.data?.message || error.error);
+        // }
+        // console.log(e);
+
+        const storage = getStorage(app);
+        const file = e.target.files[0];
+        const uniqueFileName = `images/${Date.now()}_${file.name}`;
+        const storageRef = ref(storage, uniqueFileName);
+        const uploadTask = uploadBytesResumable(storageRef, file);
+
+        uploadTask.on('state_changed',
+            (snapshot) => {
+                const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                console.log('Upload is ' + progress + '% done');
+                switch (snapshot.state) {
+                    case 'paused':
+                        console.log('Upload is paused');
+                        break;
+                    case 'running':
+                        console.log('Upload is running');
+                        break;
+                }
+            },
+            (error) => {
+                switch (error.code) {
+                    case 'storage/unauthorized':
+                        break;
+                    case 'storage/canceled':
+                        break;
+                    case 'storage/unknown':
+                        break;
+                }
+            },
+            () => {
+                getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+                    console.log('File available at', downloadURL);
+                    setImage(downloadURL);
+                    setImageUrl(downloadURL);
+                });
+            }
+        );
     };
 
     return (
