@@ -1,16 +1,13 @@
-// Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-    apiKey: "AIzaSyAUXl-AXOMN8EvxdK5nDgkrS3NeeICU4gM",
-    authDomain: "estore-upload-images.firebaseapp.com",
-    projectId: "estore-upload-images",
-    storageBucket: "estore-upload-images.appspot.com",
-    messagingSenderId: "1020623041958",
-    appId: "1:1020623041958:web:5858473b241f9814e2cb67"
+    apiKey: "AIzaSyDJcShgB872TV4jc2YueOubKRTCYzQvmAo",
+    authDomain: "e-commerce-images-1a64b.firebaseapp.com",
+    projectId: "e-commerce-images-1a64b",
+    storageBucket: "e-commerce-images-1a64b.appspot.com",
+    messagingSenderId: "16570267259",
+    appId: "1:16570267259:web:f3880cafc8a9685fd554de"
 };
 
 // Initialize Firebase
