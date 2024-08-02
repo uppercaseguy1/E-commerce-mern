@@ -46,7 +46,7 @@ const generateToken = (res, userId) => {
         secure: process.env.NODE_ENV === "production",
         sameSite: "strict",
         maxAge: 30 * 24 * 60 * 60 * 1000,
-        domain: '.your-domain.com', // Adjust according to your domain
+        domain: '.netlify.app', // Adjust according to your domain
     });
 
     return token;
