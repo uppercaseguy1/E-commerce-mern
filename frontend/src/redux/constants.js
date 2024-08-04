@@ -1,4 +1,4 @@
-export const BASE_URL = "https://e-commerce-mern-sk7k.onrender.com";
+export const BASE_URL = "https://e-commerce-mern-rcva.onrender.com";
 // export const BASE_URL = "";
 export const USERS_URL = "/api/users";
 export const CATEGORY_URL = "/api/category";
