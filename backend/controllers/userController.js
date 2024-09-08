@@ -47,16 +47,16 @@ const loginUser = asyncHandler(async (req, res) => {
             existingUser.password
         );
         if (isPasswordValid) {
-            let token = generateToken(res, existingUser._id);
-            //
+            const token = generateToken(existingUser._id);
+
             res.cookie("jwt", token, {
                 httpOnly: true,
-                secure: process.env.NODE_ENV === "production",
+                secure: process.env.NODE_ENV === "production", // Ensure secure cookies in production
                 sameSite: "strict",
                 path: "/",
-                maxAge: 30 * 24 * 60 * 60 * 1000,
+                maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
             });
-            //
+
             res.status(201).json({
                 _id: existingUser._id,
                 username: existingUser.username,
