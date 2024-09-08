@@ -27,6 +27,7 @@ const generateToken = (res, userId) => {
 
     // Debugging log to verify cookie setting
     console.log("Cookie set successfully");
+    console.log(token);
 
     return token;
 };
