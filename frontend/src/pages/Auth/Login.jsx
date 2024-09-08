@@ -32,10 +32,11 @@ const Login = () => {
 
         try {
             const res = await login({ email, password }).unwrap();
-            console.log(res);
+            console.log('Response:', res);
             dispatch(setCredientials({ ...res }));
         } catch (error) {
             toast.error(error?.data?.message || error.message)
+            console.error('Login Error:', error);
         }
     }
 
