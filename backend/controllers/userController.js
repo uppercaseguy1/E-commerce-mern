@@ -46,7 +46,6 @@ const loginUser = asyncHandler(async (req, res) => {
             password,
             existingUser.password
         );
-
         if (isPasswordValid) {
             createToken(res, existingUser._id);
 
@@ -58,6 +57,14 @@ const loginUser = asyncHandler(async (req, res) => {
             });
             return;
         }
+        else {
+            // Password is incorrect
+            res.status(401).json({ message: "Invalid credentials" });
+        }
+    }
+    else {
+        // User not found
+        res.status(404).json({ message: "User not found" });
     }
 });
 
