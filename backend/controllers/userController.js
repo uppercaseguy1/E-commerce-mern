@@ -48,6 +48,15 @@ const loginUser = asyncHandler(async (req, res) => {
         );
         if (isPasswordValid) {
             generateToken(res, existingUser._id);
+            //
+            res.cookie("jwt", token, {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === "production",
+                sameSite: "strict",
+                path: "/",
+                maxAge: 30 * 24 * 60 * 60 * 1000,
+            });
+            //
             res.status(201).json({
                 _id: existingUser._id,
                 username: existingUser.username,
