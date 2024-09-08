@@ -1,4 +1,13 @@
 import jwt from "jsonwebtoken";
+import express from 'express';
+import cors from 'cors';
+
+const app = express();
+
+app.use(cors({
+    origin: "https://nexcommerce.netlify.app/",
+    credentials: true, // Allows cookies to be sent with requests
+}));
 
 const generateToken = (res, userId) => {
     const token = jwt.sign({ userId }, process.env.JWT_SECRET, {
