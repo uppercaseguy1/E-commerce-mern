@@ -33,14 +33,9 @@ const Login = () => {
         try {
             const res = await login({ email, password }).unwrap();
             console.log('Response:', res);
-            // Store the token in localStorage
-            if (res.token) {
-                localStorage.setItem("jwt", res.token); // Store the JWT token
-            }
             dispatch(setCredientials({ ...res }));
         } catch (error) {
             toast.error(error?.data?.message || error.message)
-            console.error('Login Error:', error);
         }
     }
 

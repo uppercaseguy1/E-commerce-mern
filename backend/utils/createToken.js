@@ -19,22 +19,18 @@ const generateToken = (res, userId) => {
     console.log("Generated Token:", token);
 
     // Set JWT as an HTTP-Only Cookie
-    // res.cookie("jwt", token, {
-    //     httpOnly: true,
-    //     secure: process.env.NODE_ENV === "production",
-    //     sameSite: "strict",
-    //     maxAge: 30 * 24 * 60 * 60 * 1000,
-    // });
-
-    // Debugging log to verify cookie setting
-    // console.log("Cookie set successfully");
-    // console.log(token);
-    res.status(200).json({
-        token, // Send the token to the client
-        message: "Login successful!",
+    res.cookie("jwt", token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict",
+        maxAge: 30 * 24 * 60 * 60 * 1000,
     });
 
-    // return token;
+    // Debugging log to verify cookie setting
+    console.log("Cookie set successfully");
+    console.log(token);
+
+    return token;
 };
 
 export default generateToken;
