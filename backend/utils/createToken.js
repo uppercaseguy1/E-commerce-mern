@@ -10,6 +10,7 @@ app.use(cors({
 }));
 
 const generateToken = (res, userId) => {
+    console.log("creating token")
     const token = jwt.sign({ userId }, process.env.JWT_SECRET, {
         expiresIn: "30d",
     });
