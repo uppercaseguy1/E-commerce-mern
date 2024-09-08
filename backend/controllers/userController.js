@@ -47,7 +47,7 @@ const loginUser = asyncHandler(async (req, res) => {
             existingUser.password
         );
         if (isPasswordValid) {
-            generateToken(res, existingUser._id);
+            let token = generateToken(res, existingUser._id);
             //
             res.cookie("jwt", token, {
                 httpOnly: true,
