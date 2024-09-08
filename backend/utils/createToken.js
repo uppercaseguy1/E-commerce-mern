@@ -5,7 +5,7 @@ import cors from 'cors';
 const app = express();
 
 app.use(cors({
-    origin: "https://nexcommerce.netlify.app/",
+    origin: "https://nexcommerce.netlify.app",
     credentials: true, // Allows cookies to be sent with requests
 }));
 
@@ -15,20 +15,14 @@ const generateToken = (res, userId) => {
         expiresIn: "30d",
     });
 
-    // Debugging log to verify token creation
-    console.log("Generated Token:", token);
-
     // Set JWT as an HTTP-Only Cookie
     res.cookie("jwt", token, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
         sameSite: "strict",
+        path: "/",
         maxAge: 30 * 24 * 60 * 60 * 1000,
     });
-
-    // Debugging log to verify cookie setting
-    console.log("Cookie set successfully");
-    console.log(token);
 
     return token;
 };
