@@ -1,7 +1,7 @@
 import User from "../models/userModel.js";
 import asyncHandler from "../middlewares/asyncHandler.js";
 import bcrypt from "bcryptjs";
-import generateToken from "../utils/createToken.js";
+import createToken from "../utils/createToken.js";
 
 const createUser = asyncHandler(async (req, res) => {
     const { username, email, password } = req.body;
@@ -47,15 +47,7 @@ const loginUser = asyncHandler(async (req, res) => {
             existingUser.password
         );
         if (isPasswordValid) {
-            const token = generateToken(existingUser._id);
-
-            res.cookie("jwt", token, {
-                httpOnly: true,
-                secure: process.env.NODE_ENV === "production", // Ensure secure cookies in production
-                sameSite: "strict",
-                path: "/",
-                maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
-            });
+            createToken(res, existingUser._id);
 
             res.status(201).json({
                 _id: existingUser._id,
