@@ -1,5 +1,5 @@
-// export const BASE_URL = "https://e-commerce-mern-a210.onrender.com";
-export const BASE_URL = "";
+export const BASE_URL = "https://e-commerce-mern-a210.onrender.com";
+// export const BASE_URL = "";
 export const USERS_URL = "/api/users";
 export const CATEGORY_URL = "/api/category";
 export const PRODUCT_URL = "/api/products";
