@@ -199,8 +199,29 @@ const filterProducts = asyncHandler(async (req, res) => {
         const { checked, radio } = req.body;
 
         let args = {};
-        if (checked.length > 0) args.category = checked;
-        if (radio.length) args.price = { $gte: radio[0], $lte: radio[1] };
+
+        // Ensure checked is an array of primitive values (e.g., strings)
+        let safeChecked = Array.isArray(checked) ? checked : [];
+        safeChecked = safeChecked.filter(
+            (val) =>
+                val !== null &&
+                (typeof val === "string" ||
+                    typeof val === "number" ||
+                    typeof val === "boolean")
+        );
+        if (safeChecked.length > 0) {
+            args.category = safeChecked;
+        }
+
+        // Ensure radio is an array of two finite numbers
+        let safeRadio = Array.isArray(radio) ? radio : [];
+        if (safeRadio.length === 2) {
+            const min = Number(safeRadio[0]);
+            const max = Number(safeRadio[1]);
+            if (Number.isFinite(min) && Number.isFinite(max)) {
+                args.price = { $gte: min, $lte: max };
+            }
+        }
 
         const products = await Product.find(args);
         res.json(products);
