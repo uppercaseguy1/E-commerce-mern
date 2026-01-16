@@ -12,8 +12,14 @@ import {
 } from "../controllers/userController.js";
 
 import { authenticate, authorizeAdmin } from "../middlewares/authMiddleware.js";
+import rateLimit from "express-rate-limit";
 
 const router = express.Router();
+
+const adminUpdateLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 100, // limit each IP to 100 requests per windowMs
+});
 
 router
     .route("/")
@@ -33,6 +39,6 @@ router
     .route("/:id")
     .delete(authenticate, authorizeAdmin, deleteUserById)
     .get(authenticate, authorizeAdmin, getUserById)
-    .put(authenticate, authorizeAdmin, updateUserById);
+    .put(authenticate, authorizeAdmin, adminUpdateLimiter, updateUserById);
 
 export default router;
