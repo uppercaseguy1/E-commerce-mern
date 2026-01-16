@@ -36,9 +36,15 @@ const createUser = asyncHandler(async (req, res) => {
 const loginUser = asyncHandler(async (req, res) => {
     const { email, password } = req.body;
 
+    // Ensure that email and password are primitive strings to avoid NoSQL injection
+    if (typeof email !== "string" || typeof password !== "string") {
+        res.status(400).json({ message: "Invalid request payload" });
+        return;
+    }
+
     console.log("Login attempt received.");
 
-    const existingUser = await User.findOne({ email });
+    const existingUser = await User.findOne({ email: { $eq: email } });
 
     if (existingUser) {
         const isPasswordValid = await bcrypt.compare(
