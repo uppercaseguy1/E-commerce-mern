@@ -18,8 +18,8 @@ const createCategory = asyncHandler(async (req, res) => {
         const category = await new Category({ name: name.trim() }).save();
         res.json(category);
     } catch (error) {
-        console.log(error);
-        return res.status(400).json(error);
+        console.error(error);
+        return res.status(400).json({ error: "Failed to create category" });
     }
 });
 
