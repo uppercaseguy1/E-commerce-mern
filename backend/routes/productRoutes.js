@@ -59,6 +59,11 @@ const filterProductsLimiter = rateLimit({
     max: 50, // limit each IP to 50 filter requests per windowMs
 });
 
+const fetchProductsLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 100, // limit each IP to 100 requests per windowMs
+});
+
 const fetchProductByIdLimiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
     max: 100, // limit each IP to 100 requests per windowMs for fetching by ID
@@ -66,7 +71,7 @@ const fetchProductByIdLimiter = rateLimit({
 
 router
     .route("/")
-    .get(fetchProducts)
+    .get(fetchProductsLimiter, fetchProducts)
     .post(authenticate, authorizeAdmin, addProductLimiter, formidable(), addProduct);
 
 router.route("/allproducts").get(fetchAllProductsLimiter, fetchAllProducts);

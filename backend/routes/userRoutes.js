@@ -46,10 +46,20 @@ const updateProfileLimiter = rateLimit({
     max: 10, // limit each IP to 10 profile updates per hour
 });
 
+const getAllUsersLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 50, // limit each IP to 50 requests per windowMs
+});
+
+const getUserByIdLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 100, // limit each IP to 100 requests per windowMs
+});
+
 router
     .route("/")
     .post(createUserLimiter, createUser)
-    .get(authenticate, authorizeAdmin, getAllUsers);
+    .get(authenticate, authorizeAdmin, getAllUsersLimiter, getAllUsers);
 
 router.post("/auth", loginLimiter, loginUser);
 router.post("/logout", logoutLimiter, logoutCurrentUser);
@@ -63,7 +73,7 @@ router
 router
     .route("/:id")
     .delete(authenticate, authorizeAdmin, adminDeleteLimiter, deleteUserById)
-    .get(authenticate, authorizeAdmin, getUserById)
+    .get(authenticate, authorizeAdmin, getUserByIdLimiter, getUserById)
     .put(authenticate, authorizeAdmin, adminUpdateLimiter, updateUserById);
 
 export default router;
