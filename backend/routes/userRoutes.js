@@ -21,12 +21,27 @@ const adminUpdateLimiter = rateLimit({
     max: 100, // limit each IP to 100 requests per windowMs
 });
 
+const adminDeleteLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 50, // limit each IP to 50 requests per windowMs
+});
+
+const loginLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 5, // limit each IP to 5 login attempts per windowMs
+});
+
+const createUserLimiter = rateLimit({
+    windowMs: 60 * 60 * 1000, // 1 hour
+    max: 10, // limit each IP to 10 registrations per hour
+});
+
 router
     .route("/")
-    .post(createUser)
+    .post(createUserLimiter, createUser)
     .get(authenticate, authorizeAdmin, getAllUsers);
 
-router.post("/auth", loginUser);
+router.post("/auth", loginLimiter, loginUser);
 router.post("/logout", logoutCurrentUser);
 
 router
@@ -37,7 +52,7 @@ router
 // ADMIN ROUTES 👇
 router
     .route("/:id")
-    .delete(authenticate, authorizeAdmin, deleteUserById)
+    .delete(authenticate, authorizeAdmin, adminDeleteLimiter, deleteUserById)
     .get(authenticate, authorizeAdmin, getUserById)
     .put(authenticate, authorizeAdmin, adminUpdateLimiter, updateUserById);
 
