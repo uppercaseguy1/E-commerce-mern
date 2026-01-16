@@ -4,7 +4,6 @@ import express from "express";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import cors from 'cors';
-import csurf from "csurf";
 
 // Utiles
 import connectDB from "./config/db.js";
@@ -41,9 +40,6 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-
-const csrfProtection = csurf({ cookie: true });
-app.use(csrfProtection);
 
 app.use("/api/users", userRoutes);
 app.use("/api/category", categoryRoutes);

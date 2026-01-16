@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react"
 import { Link, useLocation, useNavigate } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import Loader from "../../components/Loader"
 import { setCredientials } from "../../redux/features/auth/authSlice"
 import { toast } from "react-toastify"
@@ -11,6 +12,8 @@ const Register = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -93,14 +96,27 @@ const Register = () => {
                         >
                             Password
                         </label>
-                        <input
-                            type="password"
-                            id="password"
-                            className="bg-[#0f0f10] text-white mt-1 p-2 border rounded w-full"
-                            placeholder="Enter password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                        />
+                        <div className="relative">
+                            <input
+                                type={showPassword ? "text" : "password"}
+                                id="password"
+                                className="bg-[#0f0f10] text-white mt-1 p-2 border rounded w-full pr-10"
+                                placeholder="Enter password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                            />
+                            <button
+                                type="button"
+                                onClick={() => setShowPassword(!showPassword)}
+                                className="absolute right-3 top-3 text-white cursor-pointer"
+                            >
+                                {showPassword ? (
+                                    <AiOutlineEyeInvisible size={20} />
+                                ) : (
+                                    <AiOutlineEye size={20} />
+                                )}
+                            </button>
+                        </div>
                     </div>
 
                     <div className="my-[2rem]">
@@ -110,14 +126,27 @@ const Register = () => {
                         >
                             Confirm Password
                         </label>
-                        <input
-                            type="password"
-                            id="confirmPassword"
-                            className="bg-[#0f0f10] text-white mt-1 p-2 border rounded w-full"
-                            placeholder="Confirm password"
-                            value={confirmPassword}
-                            onChange={(e) => setConfirmPassword(e.target.value)}
-                        />
+                        <div className="relative">
+                            <input
+                                type={showConfirmPassword ? "text" : "password"}
+                                id="confirmPassword"
+                                className="bg-[#0f0f10] text-white mt-1 p-2 border rounded w-full pr-10"
+                                placeholder="Confirm password"
+                                value={confirmPassword}
+                                onChange={(e) => setConfirmPassword(e.target.value)}
+                            />
+                            <button
+                                type="button"
+                                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                                className="absolute right-3 top-3 text-white cursor-pointer"
+                            >
+                                {showConfirmPassword ? (
+                                    <AiOutlineEyeInvisible size={20} />
+                                ) : (
+                                    <AiOutlineEye size={20} />
+                                )}
+                            </button>
+                        </div>
                     </div>
 
                     <button
