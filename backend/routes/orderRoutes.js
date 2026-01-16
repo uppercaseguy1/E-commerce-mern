@@ -31,16 +31,46 @@ const markOrderDeliveredLimiter = rateLimit({
     max: 30, // limit each IP to 30 requests per windowMs
 });
 
+const getAllOrdersLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 50, // limit each IP to 50 requests per windowMs
+});
+
+const getUserOrdersLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 100, // limit each IP to 100 requests per windowMs
+});
+
+const getOrderByIdLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 100, // limit each IP to 100 requests per windowMs
+});
+
+const countOrdersLimiter = rateLimit({
+    windowMs: 60 * 60 * 1000, // 1 hour
+    max: 50, // limit each IP to 50 requests per hour
+});
+
+const calculateSalesLimiter = rateLimit({
+    windowMs: 60 * 60 * 1000, // 1 hour
+    max: 50, // limit each IP to 50 requests per hour
+});
+
+const calculateSalesByDateLimiter = rateLimit({
+    windowMs: 60 * 60 * 1000, // 1 hour
+    max: 50, // limit each IP to 50 requests per hour
+});
+
 router
     .route("/")
     .post(authenticate, createOrderLimiter, createOrder)
-    .get(authenticate, authorizeAdmin, getAllOrders);
+    .get(authenticate, authorizeAdmin, getAllOrdersLimiter, getAllOrders);
 
-router.route("/mine").get(authenticate, getUserOrders);
-router.route("/total-orders").get(countTotalOrders);
-router.route("/total-sales").get(calculateTotalSales);
-router.route("/total-sales-by-date").get(calcualteTotalSalesByDate);
-router.route("/:id").get(authenticate, findOrderById);
+router.route("/mine").get(authenticate, getUserOrdersLimiter, getUserOrders);
+router.route("/total-orders").get(countOrdersLimiter, countTotalOrders);
+router.route("/total-sales").get(calculateSalesLimiter, calculateTotalSales);
+router.route("/total-sales-by-date").get(calculateSalesByDateLimiter, calcualteTotalSalesByDate);
+router.route("/:id").get(authenticate, getOrderByIdLimiter, findOrderById);
 router.route("/:id/pay").put(authenticate, markOrderPaidLimiter, markOrderAsPaid);
 router
     .route("/:id/deliver")
