@@ -1,8 +1,15 @@
 import path from "path";
 import express from "express";
 import multer from "multer";
+import rateLimit from "express-rate-limit";
 
 const router = express.Router();
+
+const uploadLimiter = rateLimit({
+    windowMs: 60 * 60 * 1000, // 1 hour
+    max: 10, // limit each IP to 10 uploads per hour
+    message: "Too many file uploads, please try again later"
+});
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -32,7 +39,7 @@ const fileFilter = (req, file, cb) => {
 const upload = multer({ storage, fileFilter });
 const uploadSingleImage = upload.single("image");
 
-router.post("/", (req, res) => {
+router.post("/", uploadLimiter, (req, res) => {
     uploadSingleImage(req, res, (err) => {
         if (err) {
             res.status(400).send({ message: err.message });

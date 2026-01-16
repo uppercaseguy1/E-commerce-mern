@@ -36,18 +36,28 @@ const createUserLimiter = rateLimit({
     max: 10, // limit each IP to 10 registrations per hour
 });
 
+const logoutLimiter = rateLimit({
+    windowMs: 60 * 60 * 1000, // 1 hour
+    max: 50, // limit each IP to 50 logouts per hour
+});
+
+const updateProfileLimiter = rateLimit({
+    windowMs: 60 * 60 * 1000, // 1 hour
+    max: 10, // limit each IP to 10 profile updates per hour
+});
+
 router
     .route("/")
     .post(createUserLimiter, createUser)
     .get(authenticate, authorizeAdmin, getAllUsers);
 
 router.post("/auth", loginLimiter, loginUser);
-router.post("/logout", logoutCurrentUser);
+router.post("/logout", logoutLimiter, logoutCurrentUser);
 
 router
     .route("/profile")
     .get(authenticate, getCurrentUserProfile)
-    .put(authenticate, updateCurrentUserProfile);
+    .put(authenticate, updateProfileLimiter, updateCurrentUserProfile);
 
 // ADMIN ROUTES 👇
 router
