@@ -10,7 +10,17 @@ const createUser = asyncHandler(async (req, res) => {
         throw new Error("Please fill all the inputs.");
     }
 
-    const userExists = await User.findOne({ email });
+    // Ensure that username, email, and password are primitive strings to avoid NoSQL injection
+    if (
+        typeof username !== "string" ||
+        typeof email !== "string" ||
+        typeof password !== "string"
+    ) {
+        res.status(400).json({ message: "Invalid request payload" });
+        return;
+    }
+
+    const userExists = await User.findOne({ email: { $eq: email } });
     if (userExists) res.status(400).send("User already exists");
 
     const salt = await bcrypt.genSalt(10);
