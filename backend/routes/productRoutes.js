@@ -39,6 +39,26 @@ const addReviewLimiter = rateLimit({
     max: 10, // limit each IP to 10 reviews per hour
 });
 
+const fetchAllProductsLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 100, // limit each IP to 100 requests per windowMs
+});
+
+const fetchTopProductsLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 100, // limit each IP to 100 requests per windowMs
+});
+
+const fetchNewProductsLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 100, // limit each IP to 100 requests per windowMs
+});
+
+const filterProductsLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 50, // limit each IP to 50 filter requests per windowMs
+});
+
 const fetchProductByIdLimiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
     max: 100, // limit each IP to 100 requests per windowMs for fetching by ID
@@ -49,11 +69,11 @@ router
     .get(fetchProducts)
     .post(authenticate, authorizeAdmin, addProductLimiter, formidable(), addProduct);
 
-router.route("/allproducts").get(fetchAllProducts);
+router.route("/allproducts").get(fetchAllProductsLimiter, fetchAllProducts);
 router.route("/:id/reviews").post(authenticate, checkId, addReviewLimiter, addProductReview);
 
-router.get("/top", fetchTopProducts);
-router.get("/new", fetchNewProducts);
+router.get("/top", fetchTopProductsLimiter, fetchTopProducts);
+router.get("/new", fetchNewProductsLimiter, fetchNewProducts);
 
 router
     .route("/:id")
@@ -61,6 +81,6 @@ router
     .put(authenticate, authorizeAdmin, updateProductLimiter, formidable(), updateProductDetails)
     .delete(authenticate, authorizeAdmin, deleteProductLimiter, removeProduct);
 
-router.route("/filtered-products").post(filterProducts);
+router.route("/filtered-products").post(filterProductsLimiter, filterProducts);
 
 export default router;
