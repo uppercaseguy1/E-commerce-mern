@@ -39,6 +39,11 @@ const addReviewLimiter = rateLimit({
     max: 10, // limit each IP to 10 reviews per hour
 });
 
+const fetchProductByIdLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 100, // limit each IP to 100 requests per windowMs for fetching by ID
+});
+
 router
     .route("/")
     .get(fetchProducts)
@@ -52,7 +57,7 @@ router.get("/new", fetchNewProducts);
 
 router
     .route("/:id")
-    .get(fetchProductById)
+    .get(fetchProductByIdLimiter, fetchProductById)
     .put(authenticate, authorizeAdmin, updateProductLimiter, formidable(), updateProductDetails)
     .delete(authenticate, authorizeAdmin, deleteProductLimiter, removeProduct);
 
