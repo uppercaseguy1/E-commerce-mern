@@ -63,17 +63,17 @@ const calculateSalesByDateLimiter = rateLimit({
 
 router
     .route("/")
-    .post(authenticate, createOrderLimiter, createOrder)
-    .get(authenticate, authorizeAdmin, getAllOrdersLimiter, getAllOrders);
+    .post(createOrderLimiter, authenticate, createOrder)
+    .get(getAllOrdersLimiter, authenticate, authorizeAdmin, getAllOrders);
 
-router.route("/mine").get(authenticate, getUserOrdersLimiter, getUserOrders);
+router.route("/mine").get(getUserOrdersLimiter, authenticate, getUserOrders);
 router.route("/total-orders").get(countOrdersLimiter, countTotalOrders);
 router.route("/total-sales").get(calculateSalesLimiter, calculateTotalSales);
 router.route("/total-sales-by-date").get(calculateSalesByDateLimiter, calcualteTotalSalesByDate);
-router.route("/:id").get(authenticate, getOrderByIdLimiter, findOrderById);
-router.route("/:id/pay").put(authenticate, markOrderPaidLimiter, markOrderAsPaid);
+router.route("/:id").get(getOrderByIdLimiter, authenticate, findOrderById);
+router.route("/:id/pay").put(markOrderPaidLimiter, authenticate, markOrderAsPaid);
 router
     .route("/:id/deliver")
-    .put(authenticate, authorizeAdmin, markOrderDeliveredLimiter, markOrderAsDelivered);
+    .put(markOrderDeliveredLimiter, authenticate, authorizeAdmin, markOrderAsDelivered);
 
 export default router;
