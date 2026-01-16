@@ -16,17 +16,25 @@ const Header = () => {
 
     return (
         <>
-            <div className="flex justify-around">
-                <div className="xl:block lg:hidden md:hidden:sm:hidden">
-                    <div className="grid grid-cols-2">
-                        {data.map((product) => (
-                            <div key={product._id}>
-                                <SmallProduct product={product} />
-                            </div>
-                        ))}
+            <div className="flex flex-col lg:flex-row justify-between gap-6 p-4 lg:p-8">
+                {/* Featured Products Grid - Desktop Only */}
+                <div className="hidden xl:block lg:hidden w-full lg:w-1/4">
+                    <div className="sticky top-24">
+                        <h3 className="text-white font-bold text-lg mb-4">Featured Products</h3>
+                        <div className="grid grid-cols-2 gap-3">
+                            {data.slice(0, 4).map((product) => (
+                                <div key={product._id}>
+                                    <SmallProduct product={product} />
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 </div>
-                <ProductCarousel />
+
+                {/* Main Carousel - Full Width on Mobile/Tablet */}
+                <div className="w-full lg:w-3/4">
+                    <ProductCarousel />
+                </div>
             </div>
         </>
     );
