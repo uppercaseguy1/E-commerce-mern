@@ -72,10 +72,10 @@ const fetchProductByIdLimiter = rateLimit({
 router
     .route("/")
     .get(fetchProductsLimiter, fetchProducts)
-    .post(authenticate, authorizeAdmin, addProductLimiter, formidable(), addProduct);
+    .post(addProductLimiter, authenticate, authorizeAdmin, formidable(), addProduct);
 
 router.route("/allproducts").get(fetchAllProductsLimiter, fetchAllProducts);
-router.route("/:id/reviews").post(authenticate, checkId, addReviewLimiter, addProductReview);
+router.route("/:id/reviews").post(addReviewLimiter, authenticate, checkId, addProductReview);
 
 router.get("/top", fetchTopProductsLimiter, fetchTopProducts);
 router.get("/new", fetchNewProductsLimiter, fetchNewProducts);
@@ -83,8 +83,8 @@ router.get("/new", fetchNewProductsLimiter, fetchNewProducts);
 router
     .route("/:id")
     .get(fetchProductByIdLimiter, fetchProductById)
-    .put(authenticate, authorizeAdmin, updateProductLimiter, formidable(), updateProductDetails)
-    .delete(authenticate, authorizeAdmin, deleteProductLimiter, removeProduct);
+    .put(updateProductLimiter, authenticate, authorizeAdmin, formidable(), updateProductDetails)
+    .delete(deleteProductLimiter, authenticate, authorizeAdmin, removeProduct);
 
 router.route("/filtered-products").post(filterProductsLimiter, filterProducts);
 
