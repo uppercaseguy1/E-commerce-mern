@@ -5,17 +5,17 @@ const createCategory = asyncHandler(async (req, res) => {
     try {
         const { name } = req.body;
 
-        if (!name) {
-            return res.json({ error: "Name is required" });
+        if (typeof name !== "string" || !name.trim()) {
+            return res.status(400).json({ error: "Name is required" });
         }
 
-        const existingCategory = await Category.findOne({ name });
+        const existingCategory = await Category.findOne({ name: name.trim() });
 
         if (existingCategory) {
             return res.json({ error: "Already exists" });
         }
 
-        const category = await new Category({ name }).save();
+        const category = await new Category({ name: name.trim() }).save();
         res.json(category);
     } catch (error) {
         console.log(error);
