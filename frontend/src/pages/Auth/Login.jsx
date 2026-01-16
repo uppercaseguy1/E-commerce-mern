@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import Loader from "../../components/Loader";
 import { useLoginMutation } from "../../redux/api/usersApiSlice";
 import { setCredientials } from "../../redux/features/auth/authSlice";
@@ -9,6 +10,7 @@ import { toast } from "react-toastify";
 const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -68,13 +70,26 @@ const Login = () => {
                             >
                                 Password
                             </label>
-                            <input
-                                type="password"
-                                id="password"
-                                className="bg-[#0f0f10] mt-1 p-2 border rounded w-full text-white"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                            />
+                            <div className="relative">
+                                <input
+                                    type={showPassword ? "text" : "password"}
+                                    id="password"
+                                    className="bg-[#0f0f10] mt-1 p-2 border rounded w-full text-white pr-10"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                />
+                                <button
+                                    type="button"
+                                    onClick={() => setShowPassword(!showPassword)}
+                                    className="absolute right-3 top-3 text-white cursor-pointer"
+                                >
+                                    {showPassword ? (
+                                        <AiOutlineEyeInvisible size={20} />
+                                    ) : (
+                                        <AiOutlineEye size={20} />
+                                    )}
+                                </button>
+                            </div>
                         </div>
                         <button
                             disabled={isLoading}
