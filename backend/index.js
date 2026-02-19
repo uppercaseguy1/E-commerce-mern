@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import cors from 'cors';
 import lusca from "lusca";
+import session from "express-session";
 
 // Utiles
 import connectDB from "./config/db.js";
@@ -23,6 +24,14 @@ const allowedOrigins = process.env.ALLOWED_ORIGINS
 connectDB();
 
 const app = express();
+
+// Add session middleware
+app.use(session({
+    secret: process.env.SESSION_SECRET || "defaultsecret",
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: process.env.NODE_ENV === "production" }
+}));
 
 // CORS configuration with whitelist
 app.use(cors({
