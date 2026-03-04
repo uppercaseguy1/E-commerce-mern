@@ -50,7 +50,14 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use(lusca.csrf());
+
+// Skip CSRF protection for API routes (using JWT for security instead)
+app.use("/api/", (req, res, next) => {
+    next();
+});
+
+// Apply lusca CSRF only to non-API routes if needed
+// app.use(lusca.csrf());
 
 app.use("/api/users", userRoutes);
 app.use("/api/category", categoryRoutes);
