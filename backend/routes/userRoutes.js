@@ -67,7 +67,7 @@ router
     .get(getAllUsersLimiter, authenticate, authorizeAdmin, getAllUsers);
 
 router.post("/auth", loginLimiter, loginUser);
-router.post("/logout", logoutLimiter, logoutCurrentUser);
+router.post("/logout", logoutLimiter, authenticate, logoutCurrentUser);
 
 router
     .route("/profile")

@@ -14,6 +14,8 @@
     "@reduxjs/toolkit": "^2.2.6",
     "apexcharts": "^3.50.0",
     "axios": "^1.7.2",
+    "baseline-browser-mapping": "^2.10.0",
+    "caniuse-lite": "^1.0.30001776",
     "firebase": "^10.12.4",
     "flowbite": "^2.4.1",
     "moment": "^2.30.1",

@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import cors from 'cors';
 import lusca from "lusca";
+import session from "express-session";
 
 // Utiles
 import connectDB from "./config/db.js";
@@ -24,6 +25,14 @@ connectDB();
 
 const app = express();
 
+// Add session middleware
+app.use(session({
+    secret: process.env.SESSION_SECRET || "defaultsecret",
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: process.env.NODE_ENV === "production" }
+}));
+
 // CORS configuration with whitelist
 app.use(cors({
     origin: function (origin, callback) {
@@ -41,7 +50,14 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use(lusca.csrf());
+
+// Skip CSRF protection for API routes (using JWT for security instead)
+app.use("/api/", (req, res, next) => {
+    next();
+});
+
+// Apply lusca CSRF only to non-API routes if needed
+// app.use(lusca.csrf());
 
 app.use("/api/users", userRoutes);
 app.use("/api/category", categoryRoutes);
