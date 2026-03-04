@@ -87,7 +87,7 @@ const logoutCurrentUser = asyncHandler(async (req, res) => {
     res.cookie("jwt", "", {
         httpOnly: true,
         secure: process.env.NODE_ENV !== "development",
-        sameSite: "strict",
+        sameSite: "lax",
         expires: new Date(0),
     });
 

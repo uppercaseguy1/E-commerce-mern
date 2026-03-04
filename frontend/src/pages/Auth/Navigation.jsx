@@ -28,13 +28,19 @@ const Navigation = () => {
 
     const handleLogout = async () => {
         try {
-            await logoutApiCall().unwrap();
+            const response = await logoutApiCall().unwrap();
+            console.log("Logout response:", response);
             dispatch(logout());
             navigate("/login");
             setShowDropdown(false);
             setShowMobileMenu(false);
         } catch (error) {
-            console.error(error);
+            console.error("Logout error:", error);
+            // Even if API call fails, clear local state and redirect
+            dispatch(logout());
+            navigate("/login");
+            setShowDropdown(false);
+            setShowMobileMenu(false);
         }
     };
 
